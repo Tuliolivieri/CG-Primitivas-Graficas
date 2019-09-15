@@ -63,6 +63,10 @@
             this.label4 = new System.Windows.Forms.Label();
             this.dgvPoligonos = new System.Windows.Forms.DataGridView();
             this.colPoligonos = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tbEscX = new System.Windows.Forms.TextBox();
+            this.tbEscY = new System.Windows.Forms.TextBox();
+            this.btEscala = new System.Windows.Forms.Button();
             this.tabPane.SuspendLayout();
             this.tabPrimitivas.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -304,6 +308,10 @@
             // panel7
             // 
             this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel7.Controls.Add(this.btEscala);
+            this.panel7.Controls.Add(this.tbEscY);
+            this.panel7.Controls.Add(this.tbEscX);
+            this.panel7.Controls.Add(this.label8);
             this.panel7.Controls.Add(this.btTransladar);
             this.panel7.Controls.Add(this.label7);
             this.panel7.Controls.Add(this.tbTransY);
@@ -446,6 +454,39 @@
             this.colPoligonos.Name = "colPoligonos";
             this.colPoligonos.ReadOnly = true;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(5, 53);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(116, 13);
+            this.label8.TabIndex = 4;
+            this.label8.Text = "Escala (Esc. X, Esc. Y)";
+            // 
+            // tbEscX
+            // 
+            this.tbEscX.Location = new System.Drawing.Point(4, 70);
+            this.tbEscX.Name = "tbEscX";
+            this.tbEscX.Size = new System.Drawing.Size(77, 20);
+            this.tbEscX.TabIndex = 5;
+            // 
+            // tbEscY
+            // 
+            this.tbEscY.Location = new System.Drawing.Point(88, 69);
+            this.tbEscY.Name = "tbEscY";
+            this.tbEscY.Size = new System.Drawing.Size(75, 20);
+            this.tbEscY.TabIndex = 6;
+            // 
+            // btEscala
+            // 
+            this.btEscala.Location = new System.Drawing.Point(170, 67);
+            this.btEscala.Name = "btEscala";
+            this.btEscala.Size = new System.Drawing.Size(95, 23);
+            this.btEscala.TabIndex = 7;
+            this.btEscala.Text = "Escalar";
+            this.btEscala.UseVisualStyleBackColor = true;
+            this.btEscala.Click += new System.EventHandler(this.BtEscala_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -517,6 +558,10 @@
         private System.Windows.Forms.TextBox tbTransY;
         private System.Windows.Forms.TextBox tbTransX;
         private System.Windows.Forms.Button btTransladar;
+        private System.Windows.Forms.Button btEscala;
+        private System.Windows.Forms.TextBox tbEscY;
+        private System.Windows.Forms.TextBox tbEscX;
+        private System.Windows.Forms.Label label8;
     }
 }
 

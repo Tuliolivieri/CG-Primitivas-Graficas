@@ -249,7 +249,7 @@ namespace Primitivas_Graficas
             x1 = x2 = y1 = y2 = -1;
         }
 
-        public void Bresenham(int x1, int x2, int y1, int y2, Bitmap bmp, Color cor) /// FUNCIONA
+        public void Bresenham(int x1, int x2, int y1, int y2, Bitmap bmp, Color cor, PictureBox pb) /// FUNCIONA
         {
             int dx, dy, incE, incNE, declive, d, x, y;
 
@@ -257,17 +257,17 @@ namespace Primitivas_Graficas
             dy = (int) (y2 - y1);
             declive = 1;
 
-            if (cor == Color.Red)
+            /*if (cor == Color.Red)
                 Console.WriteLine("COR: RED");
 
-            Console.WriteLine("P: " + x1 + ", " + x2 + ", " + y1 + ", " + y2);
+            Console.WriteLine("P: " + x1 + ", " + x2 + ", " + y1 + ", " + y2);*/
 
             if(Math.Abs(dx) > Math.Abs(dy)) // FOR EM RELAÇÃO A X
             {
                 if (x1 > x2)
                 {
                     // INVERTE OS PONTOS E REFAZ AS PERGUNTAS
-                    Bresenham(x2, x1, y2, y1, bmp, cor);
+                    Bresenham(x2, x1, y2, y1, bmp, cor, pb);
                 }
                 else
                 {
@@ -286,7 +286,7 @@ namespace Primitivas_Graficas
 
                     for (x = (int)x1; x <= x2; x++)
                     {
-                        if (isOnPictureBox(x, y, pictureBox1))
+                        if (isOnPictureBox(x, y, pb))
                             bmp.SetPixel(x, y, cor);
 
                         if (d < 0)
@@ -303,7 +303,7 @@ namespace Primitivas_Graficas
             {
                 if(y1 > y2)
                 {
-                    Bresenham(x2, x1, y2, y1, bmp, cor);
+                    Bresenham(x2, x1, y2, y1, bmp, cor, pb);
                 }
                 else
                 {
@@ -320,7 +320,7 @@ namespace Primitivas_Graficas
                     x = (int) x1;
                     for (y = (int) y1; y <= y2; ++y)
                     {
-                        if(isOnPictureBox(x, y, pictureBox1))
+                        if(isOnPictureBox(x, y, pb))
                             bmp.SetPixel(x, y, cor);
                         if (d < 0) // escolhe incE
                             d += incE;
@@ -511,7 +511,7 @@ namespace Primitivas_Graficas
                     Bitmap bmp = new Bitmap(pictureBox1.Image);
 
                     retas.Add(new Reta(new Ponto(x1, x2), new Ponto(y1, y2)));
-                    Bresenham(x1, x2, y1, y2, bmp, Color.Black);
+                    Bresenham(x1, x2, y1, y2, bmp, Color.Black, pictureBox1);
 
                     pictureBox1.Image = bmp;
                 }
@@ -585,8 +585,8 @@ namespace Primitivas_Graficas
                 {
                     Bitmap bmp = new Bitmap(pictureBoxPoligonos.Image);
 
-                    Bresenham(p1.X, p2.X, p1.Y, p2.Y, bmp, Color.Black);
-                    Bresenham(p2.X, p_novo.Vertices.First().X , p2.Y, p_novo.Vertices.First().Y, bmp, Color.Black);
+                    Bresenham(p1.X, p2.X, p1.Y, p2.Y, bmp, Color.Black, pictureBoxPoligonos);
+                    Bresenham(p2.X, p_novo.Vertices.First().X , p2.Y, p_novo.Vertices.First().Y, bmp, Color.Black, pictureBoxPoligonos);
 
                     p_novo.addVertice(new Ponto(p_novo.Vertices.First().X, p_novo.Vertices.First().Y));
 
@@ -596,7 +596,7 @@ namespace Primitivas_Graficas
                 {
                     Bitmap bmp = new Bitmap(pictureBoxPoligonos.Image);
 
-                    Bresenham(p1.X, p2.X, p1.Y, p2.Y, bmp, Color.Black);
+                    Bresenham(p1.X, p2.X, p1.Y, p2.Y, bmp, Color.Black, pictureBoxPoligonos);
                     p1 = p2;
                     p2 = new Ponto(-1, -1);
 
@@ -630,9 +630,57 @@ namespace Primitivas_Graficas
             }
         }
 
-        private void BtTransladar_Click(object sender, EventArgs e)
+        public void translacao(double x, double y)
         {
             double[,] mt = new double[3, 3];
+
+            mt[0, 0] = mt[1, 1] = mt[2, 2] = 1;
+
+            mt[0, 2] = x;
+            mt[1, 2] = y;
+
+            /*Console.WriteLine(mt[0, 0].ToString() + mt[0, 1].ToString() + mt[0, 2].ToString());
+            Console.WriteLine(mt[1, 0].ToString() + mt[1, 1].ToString() + mt[1, 2].ToString());
+            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());*/
+
+            Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
+
+            pol.setMA(multiplicaMatriz(mt, pol.getMA()));
+            double[,] MA = pol.getMA();
+
+            Ponto p;
+
+            for (int i = 0; i < pol.Vertices.Count; i++)
+            {
+                p = pol.Vertices.ElementAt(i);
+
+                Console.WriteLine((p.X * MA[0, 0]/* + p.Y * MA[0, 1] + MA[0, 2]*/).ToString());
+                p.X = (int)(p.X * MA[0, 0] + p.Y * MA[0, 1] + MA[0, 2]);
+                p.Y = (int)(p.X * MA[1, 0] + p.Y * MA[1, 1] + MA[1, 2]);
+            }
+            /*mt = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).getMA();
+            Console.WriteLine(mt[0, 0].ToString() + mt[0, 1].ToString() + mt[0, 2].ToString());
+            Console.WriteLine(mt[1, 0].ToString() + mt[1, 1].ToString() + mt[1, 2].ToString());
+            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());*/
+
+            redesenhaPoligonos();
+        }
+
+        private void BtTransladar_Click(object sender, EventArgs e)
+        {
+            double x, y;
+
+            if (tbTransX.Text.Length > 0)
+                double.TryParse(tbTransX.Text, out x);
+            else
+                x = 0;
+            if (tbTransY.Text.Length > 0)
+                double.TryParse(tbTransY.Text, out y);
+            else
+                y = 0;
+
+            translacao(x, y);
+            /*double[,] mt = new double[3, 3];
 
             mt[0, 0] = mt[1, 1] = mt[2, 2] = 1;
 
@@ -645,16 +693,31 @@ namespace Primitivas_Graficas
             else
                 mt[1, 2] = 0;
 
+            /*Console.WriteLine(mt[0, 0].ToString() + mt[0, 1].ToString() + mt[0, 2].ToString());
+            Console.WriteLine(mt[1, 0].ToString() + mt[1, 1].ToString() + mt[1, 2].ToString());
+            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());*/
+
+            /*Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
+
+            pol.setMA(multiplicaMatriz(mt, pol.getMA()));
+            double[,] MA = pol.getMA();
+
+            Ponto p;
+
+            for(int i = 0; i < pol.Vertices.Count; i++)
+            {
+                p = pol.Vertices.ElementAt(i);
+
+                Console.WriteLine((p.X * MA[0, 0]/* + p.Y * MA[0, 1] + MA[0, 2]).ToString());
+                p.X = (int)(p.X * MA[0, 0] + p.Y * MA[0, 1] + MA[0, 2]);
+                p.Y = (int)(p.X * MA[1, 0] + p.Y * MA[1, 1] + MA[1, 2]);
+            }
+            /*mt = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).getMA();
             Console.WriteLine(mt[0, 0].ToString() + mt[0, 1].ToString() + mt[0, 2].ToString());
             Console.WriteLine(mt[1, 0].ToString() + mt[1, 1].ToString() + mt[1, 2].ToString());
-            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());
+            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());*/
 
-            poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).setMA(multiplicaMatriz(mt, poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).getMA()));
-
-            mt = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).getMA();
-            Console.WriteLine(mt[0, 0].ToString() + mt[0, 1].ToString() + mt[0, 2].ToString());
-            Console.WriteLine(mt[1, 0].ToString() + mt[1, 1].ToString() + mt[1, 2].ToString());
-            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());
+            //redesenhaPoligonos();
             /*double[,] mat1 = new double[3, 3];
             double[,] mat2 = new double[3, 3];
 
@@ -697,6 +760,81 @@ namespace Primitivas_Graficas
             }
         }
 
+        private void escala(double ex, double ey)
+        {
+            double[,] mt = new double[3, 3];
+
+            mt[2, 2] = 1;
+
+            mt[0, 0] = ex;
+            mt[1, 1] = ey;
+
+            Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
+
+            pol.setMA(multiplicaMatriz(mt, pol.getMA()));
+            double[,] MA = pol.getMA();
+
+            Ponto p;
+
+            for (int i = 0; i < pol.Vertices.Count; i++)
+            {
+                p = pol.Vertices.ElementAt(i);
+                p.X = (int)(p.X * MA[0, 0] + p.Y * MA[0, 1] + MA[0, 2]);
+                p.Y = (int)(p.X * MA[1, 0] + p.Y * MA[1, 1] + MA[1, 2]);
+            }
+            redesenhaPoligonos();
+        }
+
+        private void BtEscala_Click(object sender, EventArgs e)
+        {
+            double[,] mt = new double[3, 3];
+
+            double ex, ey;
+
+            mt[2, 2] = 1;
+
+            if (tbEscX.Text.Length > 0)
+                double.TryParse(tbEscX.Text, out ex);
+            else
+                ex = 0;
+            if (tbEscY.Text.Length > 0)
+                double.TryParse(tbEscY.Text, out ey);
+            else
+                ey = 0;
+
+            Ponto p = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).Vertices.First();
+
+            //translacao(p.X * (-1), -p.Y * (-1));
+            escala(ex, ey);
+            //translacao(p.X, p.Y);
+
+            /*Console.WriteLine(mt[0, 0].ToString() + mt[0, 1].ToString() + mt[0, 2].ToString());
+            Console.WriteLine(mt[1, 0].ToString() + mt[1, 1].ToString() + mt[1, 2].ToString());
+            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());*/
+
+            /*Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
+
+            pol.setMA(multiplicaMatriz(mt, pol.getMA()));
+            double[,] MA = pol.getMA();
+
+            Ponto p;
+
+            for (int i = 0; i < pol.Vertices.Count; i++)
+            {
+                p = pol.Vertices.ElementAt(i);
+
+                Console.WriteLine((p.X * MA[0, 0]/* + p.Y * MA[0, 1] + MA[0, 2]).ToString());
+                p.X = (int)(p.X * MA[0, 0] + p.Y * MA[0, 1] + MA[0, 2]);
+                p.Y = (int)(p.X * MA[1, 0] + p.Y * MA[1, 1] + MA[1, 2]);
+            }
+            /*mt = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).getMA();
+            Console.WriteLine(mt[0, 0].ToString() + mt[0, 1].ToString() + mt[0, 2].ToString());
+            Console.WriteLine(mt[1, 0].ToString() + mt[1, 1].ToString() + mt[1, 2].ToString());
+            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());*/
+
+            //redesenhaPoligonos();
+        }
+
         public bool isOnPictureBox(int x, int y, PictureBox pb)
         {
             return x >= 0 && x < pb.Width && y >= 0 && y < pb.Height;
@@ -712,7 +850,7 @@ namespace Primitivas_Graficas
             {
                 p1 = new Ponto(pol.Vertices.ElementAt(i).X, pol.Vertices.ElementAt(i).Y);
                 p2 = new Ponto(pol.Vertices.ElementAt(i + 1).X, pol.Vertices.ElementAt(i + 1).Y);
-                Bresenham(p1.X, p2.X, p1.Y, p2.Y, bmp, Color.Red);
+                Bresenham(p1.X, p2.X, p1.Y, p2.Y, bmp, Color.Red, pictureBoxPoligonos);
                 //pictureBox1.Image = bmp;
             }
 
@@ -732,9 +870,8 @@ namespace Primitivas_Graficas
                     val = 0;
                     for(k = 0; k < 3; k++)
                     {
-                        val = mat1[i, k] * mat2[k, j];
+                        val += mat1[i, k] * mat2[k, j];
                     }
-                    Console.WriteLine(val);
                     mat[i, j] = val;
                 }
             }
@@ -742,5 +879,42 @@ namespace Primitivas_Graficas
             return mat;
         }
 
+        public void redesenhaPoligonos()
+        {
+            Bitmap bmp = new Bitmap(pictureBoxPoligonos.Width, pictureBoxPoligonos.Height);
+            Ponto p1, p2, v;
+            Poligono pol;
+            double[,] MA;
+
+
+            for (int i = 0; i < poligonos.Count; i++)
+            {
+                pol = poligonos.ElementAt(i);
+                MA = pol.getMA();
+
+                for (int j = 0; j < pol.Vertices.Count() - 1; j++)
+                {
+                    p1 = new Ponto(pol.Vertices.ElementAt(j).X, pol.Vertices.ElementAt(j).Y);
+                    p2 = new Ponto(pol.Vertices.ElementAt(j + 1).X, pol.Vertices.ElementAt(j + 1).Y);
+
+                    /*Console.WriteLine(MA[0, 0].ToString() + MA[0, 1].ToString() + MA[0, 2].ToString());
+                    Console.WriteLine(MA[1, 0].ToString() + MA[1, 1].ToString() + MA[1, 2].ToString());
+                    Console.WriteLine(MA[2, 0].ToString() + MA[2, 1].ToString() + MA[2, 2].ToString());
+                    Console.WriteLine("P1: " + p1.X + ", " + p1.Y);
+                    Console.WriteLine("P2: " + p2.X + ", " + p2.Y);
+
+                    p1.X = (int)(p1.X * MA[0, 0] + p1.Y * MA[0, 1] + MA[0, 2]);
+                    p1.Y = (int)(p1.X * MA[1, 0] + p1.Y * MA[1, 1] + MA[1, 2]);
+
+                    p2.X = (int)(p2.X * MA[0, 0] + p2.Y * MA[0, 1] +  MA[0, 2]);
+                    p2.Y = (int)(p2.X * MA[1, 0] + p2.Y * MA[1, 1] +  MA[1, 2]);*/
+
+                    Bresenham(p1.X, p2.X, p1.Y, p2.Y, bmp, Color.Black, pictureBoxPoligonos);
+                    //pictureBox1.Image = bmp;
+                }
+            }
+
+            pictureBoxPoligonos.Image = bmp;
+        }
     }
 }
