@@ -573,6 +573,7 @@ namespace Primitivas_Graficas
 
                 p_novo = new Poligono();
                 p_novo.addVertice(new Ponto(p1.X, p1.Y));
+                p_novo.addOriginal(new Ponto(p1.X, p1.Y));
             }
             else
             {
@@ -580,6 +581,7 @@ namespace Primitivas_Graficas
                 p2.Y = e.Y;
 
                 p_novo.addVertice(new Ponto(p2.X, p2.Y));
+                p_novo.addOriginal(new Ponto(p2.X, p2.Y));
 
                 if(e.Button == MouseButtons.Right && p_novo.Vertices.Count() > 2)
                 {
@@ -589,6 +591,7 @@ namespace Primitivas_Graficas
                     Bresenham(p2.X, p_novo.Vertices.First().X , p2.Y, p_novo.Vertices.First().Y, bmp, Color.Black, pictureBoxPoligonos);
 
                     p_novo.addVertice(new Ponto(p_novo.Vertices.First().X, p_novo.Vertices.First().Y));
+                    p_novo.addOriginal(new Ponto(p_novo.Vertices.First().X, p_novo.Vertices.First().Y));
 
                     pictureBoxPoligonos.Image = bmp;
                 }
@@ -599,14 +602,6 @@ namespace Primitivas_Graficas
                     Bresenham(p1.X, p2.X, p1.Y, p2.Y, bmp, Color.Black, pictureBoxPoligonos);
                     p1 = p2;
                     p2 = new Ponto(-1, -1);
-
-                    /*for(int i = 0; i < p_novo.Vertices.Count - 1; i++)
-                    {
-                        p1 = p_novo.Vertices.ElementAt(i);
-                        p2 = p_novo.Vertices.ElementAt(i + 1);
-
-                        Bresenham(p1.X, p2.X, p1.Y, p2.Y, bmp);
-                    }*/
 
                     pictureBoxPoligonos.Image = bmp;
                 }
@@ -639,29 +634,22 @@ namespace Primitivas_Graficas
             mt[0, 2] = x;
             mt[1, 2] = y;
 
-            /*Console.WriteLine(mt[0, 0].ToString() + mt[0, 1].ToString() + mt[0, 2].ToString());
-            Console.WriteLine(mt[1, 0].ToString() + mt[1, 1].ToString() + mt[1, 2].ToString());
-            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());*/
-
             Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
 
             pol.setMA(multiplicaMatriz(mt, pol.getMA()));
             double[,] MA = pol.getMA();
 
-            Ponto p;
+            Ponto p, po;
 
-            for (int i = 0; i < pol.Vertices.Count; i++)
+            for (int i = 0; i < pol.Original.Count; i++)
             {
                 p = pol.Vertices.ElementAt(i);
+                po = pol.Original.ElementAt(i);
 
                 Console.WriteLine((p.X * MA[0, 0]/* + p.Y * MA[0, 1] + MA[0, 2]*/).ToString());
-                p.X = (int)(p.X * MA[0, 0] + p.Y * MA[0, 1] + MA[0, 2]);
-                p.Y = (int)(p.X * MA[1, 0] + p.Y * MA[1, 1] + MA[1, 2]);
+                p.X = (int)(po.X * MA[0, 0] + po.Y * MA[0, 1] + MA[0, 2]);
+                p.Y = (int)(po.X * MA[1, 0] + po.Y * MA[1, 1] + MA[1, 2]);
             }
-            /*mt = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).getMA();
-            Console.WriteLine(mt[0, 0].ToString() + mt[0, 1].ToString() + mt[0, 2].ToString());
-            Console.WriteLine(mt[1, 0].ToString() + mt[1, 1].ToString() + mt[1, 2].ToString());
-            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());*/
 
             redesenhaPoligonos();
         }
@@ -680,74 +668,6 @@ namespace Primitivas_Graficas
                 y = 0;
 
             translacao(x, y);
-            /*double[,] mt = new double[3, 3];
-
-            mt[0, 0] = mt[1, 1] = mt[2, 2] = 1;
-
-            if (tbTransX.Text.Length > 0)
-                double.TryParse(tbTransX.Text, out mt[0, 2]);
-            else
-                mt[0, 2] = 0;
-            if (tbTransY.Text.Length > 0)
-                double.TryParse(tbTransY.Text, out mt[1, 2]);
-            else
-                mt[1, 2] = 0;
-
-            /*Console.WriteLine(mt[0, 0].ToString() + mt[0, 1].ToString() + mt[0, 2].ToString());
-            Console.WriteLine(mt[1, 0].ToString() + mt[1, 1].ToString() + mt[1, 2].ToString());
-            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());*/
-
-            /*Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
-
-            pol.setMA(multiplicaMatriz(mt, pol.getMA()));
-            double[,] MA = pol.getMA();
-
-            Ponto p;
-
-            for(int i = 0; i < pol.Vertices.Count; i++)
-            {
-                p = pol.Vertices.ElementAt(i);
-
-                Console.WriteLine((p.X * MA[0, 0]/* + p.Y * MA[0, 1] + MA[0, 2]).ToString());
-                p.X = (int)(p.X * MA[0, 0] + p.Y * MA[0, 1] + MA[0, 2]);
-                p.Y = (int)(p.X * MA[1, 0] + p.Y * MA[1, 1] + MA[1, 2]);
-            }
-            /*mt = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).getMA();
-            Console.WriteLine(mt[0, 0].ToString() + mt[0, 1].ToString() + mt[0, 2].ToString());
-            Console.WriteLine(mt[1, 0].ToString() + mt[1, 1].ToString() + mt[1, 2].ToString());
-            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());*/
-
-            //redesenhaPoligonos();
-            /*double[,] mat1 = new double[3, 3];
-            double[,] mat2 = new double[3, 3];
-
-            /*for(int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                    mat1[i, j] = mat2[i, j] = i + j;
-            }
-
-            mat1[0, 0] = 1;
-            mat1[0, 1] = 0;
-            mat1[0, 2] = -2;
-            mat1[1, 0] = 0;
-            mat1[1, 1] = 1;
-            mat1[1, 2] = 3;
-            mat1[2, 0] = 0;
-            mat1[2, 1] = 0;
-            mat1[2, 2] = 1;
-
-            mat2[0, 0] = -0.5;
-            mat2[0, 1] = 0;
-            mat2[0, 2] = 0.5;
-            mat2[1, 0] = 0;
-            mat2[1, 1] = -1;
-            mat2[1, 2] = 1;
-            mat2[2, 0] = 0;
-            mat2[2, 1] = 0;
-            mat2[2, 2] = 1;
-
-            multiplicaMatriz(mat1, mat2);*/
         }
 
         public void exibeCirculos()
@@ -771,16 +691,63 @@ namespace Primitivas_Graficas
 
             Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
 
-            pol.setMA(multiplicaMatriz(mt, pol.getMA()));
+            Ponto centro = new Ponto(0, 0);
+            Ponto pc;
+            int x, y;
+            x = y = 0;
+            for(int k = 0; k < pol.Original.Count - 1; k++)
+            {
+                x += pol.Original.ElementAt(k).X;
+                y += pol.Original.ElementAt(k).Y;
+
+                Console.WriteLine(pol.Original.ElementAt(k).X + " - " + pol.Original.ElementAt(k).Y);
+            }
+            Console.WriteLine("Total = "+ x + " - " + y);
+
+            x /= pol.Original.Count - 1;
+            y /= pol.Original.Count - 1;
+
+            Console.WriteLine("X= "+ x );
+
+            double[,] m_tlc_co = new double[3, 3];
+            double[,] m_tlc_oc = new double[3, 3];
+
+            m_tlc_co[0, 0] = m_tlc_co[1, 1] = m_tlc_co[2, 2] = 1;
+            m_tlc_oc[0, 0] = m_tlc_oc[1, 1] = m_tlc_oc[2, 2] = 1;
+
+            m_tlc_co[0, 2] = x * (-1);
+            m_tlc_co[1, 2] = y * (-1);
+
+            m_tlc_oc[0, 2] = x;
+            m_tlc_oc[1, 2] = y;
+
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_oc));
+            pol.setMA(multiplicaMatriz(pol.getMA(), mt));
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_co));
+
             double[,] MA = pol.getMA();
 
-            Ponto p;
+            Console.WriteLine(m_tlc_co[0, 0] + ", " + m_tlc_co[0, 1] + ", " + m_tlc_co[0, 2] + ", ");
+            Console.WriteLine(m_tlc_co[1, 0] + ", " + m_tlc_co[1, 1] + ", " + m_tlc_co[1, 2] + ", ");
+            Console.WriteLine(m_tlc_co[2, 0] + ", " + m_tlc_co[2, 1] + ", " + m_tlc_co[2, 2] + ", ");
+
+            Console.WriteLine(m_tlc_oc[0, 0] + ", " + m_tlc_oc[0, 1] + ", " + m_tlc_oc[0, 2] + ", ");
+            Console.WriteLine(m_tlc_oc[1, 0] + ", " + m_tlc_oc[1, 1] + ", " + m_tlc_oc[1, 2] + ", ");
+            Console.WriteLine(m_tlc_oc[2, 0] + ", " + m_tlc_oc[2, 1] + ", " + m_tlc_oc[2, 2] + ", ");
+
+            Console.WriteLine(MA[0, 0] + ", " + MA[0, 1] + ", " + MA[0, 2] + ", ");
+            Console.WriteLine(MA[1, 0] + ", " + MA[1, 1] + ", " + MA[1, 2] + ", ");
+            Console.WriteLine(MA[2, 0] + ", " + MA[2, 1] + ", " + MA[2, 2] + ", ");
+
+            Ponto p, po;
 
             for (int i = 0; i < pol.Vertices.Count; i++)
             {
                 p = pol.Vertices.ElementAt(i);
-                p.X = (int)(p.X * MA[0, 0] + p.Y * MA[0, 1] + MA[0, 2]);
-                p.Y = (int)(p.X * MA[1, 0] + p.Y * MA[1, 1] + MA[1, 2]);
+                po = pol.Original.ElementAt(i);
+
+                p.X = (int)(po.X * MA[0, 0] + po.Y * MA[0, 1] + MA[0, 2]);
+                p.Y = (int)(po.X * MA[1, 0] + po.Y * MA[1, 1] + MA[1, 2]);
             }
             redesenhaPoligonos();
         }
@@ -803,36 +770,9 @@ namespace Primitivas_Graficas
                 ey = 0;
 
             Ponto p = new Ponto(poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).Vertices.First().X, poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).Vertices.First().Y);
-
-            //translacao(p.X * (-1), p.Y * (-1));
+            translacao(p.X, p.Y);
             escala(ex, ey);
-            //translacao(p.X, p.Y);
-
-            /*Console.WriteLine(mt[0, 0].ToString() + mt[0, 1].ToString() + mt[0, 2].ToString());
-            Console.WriteLine(mt[1, 0].ToString() + mt[1, 1].ToString() + mt[1, 2].ToString());
-            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());*/
-
-            /*Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
-
-            pol.setMA(multiplicaMatriz(mt, pol.getMA()));
-            double[,] MA = pol.getMA();
-
-            Ponto p;
-
-            for (int i = 0; i < pol.Vertices.Count; i++)
-            {
-                p = pol.Vertices.ElementAt(i);
-
-                Console.WriteLine((p.X * MA[0, 0]/* + p.Y * MA[0, 1] + MA[0, 2]).ToString());
-                p.X = (int)(p.X * MA[0, 0] + p.Y * MA[0, 1] + MA[0, 2]);
-                p.Y = (int)(p.X * MA[1, 0] + p.Y * MA[1, 1] + MA[1, 2]);
-            }
-            /*mt = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).getMA();
-            Console.WriteLine(mt[0, 0].ToString() + mt[0, 1].ToString() + mt[0, 2].ToString());
-            Console.WriteLine(mt[1, 0].ToString() + mt[1, 1].ToString() + mt[1, 2].ToString());
-            Console.WriteLine(mt[2, 0].ToString() + mt[2, 1].ToString() + mt[2, 2].ToString());*/
-
-            //redesenhaPoligonos();
+            translacao(p.X * (-1), p.Y * (-1));
         }
 
         public bool isOnPictureBox(int x, int y, PictureBox pb)
@@ -897,20 +837,7 @@ namespace Primitivas_Graficas
                     p1 = new Ponto(pol.Vertices.ElementAt(j).X, pol.Vertices.ElementAt(j).Y);
                     p2 = new Ponto(pol.Vertices.ElementAt(j + 1).X, pol.Vertices.ElementAt(j + 1).Y);
 
-                    /*Console.WriteLine(MA[0, 0].ToString() + MA[0, 1].ToString() + MA[0, 2].ToString());
-                    Console.WriteLine(MA[1, 0].ToString() + MA[1, 1].ToString() + MA[1, 2].ToString());
-                    Console.WriteLine(MA[2, 0].ToString() + MA[2, 1].ToString() + MA[2, 2].ToString());
-                    Console.WriteLine("P1: " + p1.X + ", " + p1.Y);
-                    Console.WriteLine("P2: " + p2.X + ", " + p2.Y);
-
-                    p1.X = (int)(p1.X * MA[0, 0] + p1.Y * MA[0, 1] + MA[0, 2]);
-                    p1.Y = (int)(p1.X * MA[1, 0] + p1.Y * MA[1, 1] + MA[1, 2]);
-
-                    p2.X = (int)(p2.X * MA[0, 0] + p2.Y * MA[0, 1] +  MA[0, 2]);
-                    p2.Y = (int)(p2.X * MA[1, 0] + p2.Y * MA[1, 1] +  MA[1, 2]);*/
-
                     Bresenham(p1.X, p2.X, p1.Y, p2.Y, bmp, Color.Black, pictureBoxPoligonos);
-                    //pictureBox1.Image = bmp;
                 }
             }
 

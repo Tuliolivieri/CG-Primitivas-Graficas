@@ -9,11 +9,14 @@ namespace Primitivas_Graficas
     class Poligono
     {
         private List<Ponto> vertices;
+        private List<Ponto> original;
         private double[,] MA;
 
         public Poligono()
         {
             vertices = new List<Ponto>();
+            original = new List<Ponto>();
+
             MA = new double[3, 3];
             MA[0, 0] = 1;
             MA[0, 1] = 0;
@@ -27,6 +30,7 @@ namespace Primitivas_Graficas
         }
 
         internal List<Ponto> Vertices { get => vertices; set => vertices = value; }
+        internal List<Ponto> Original { get => original; set => original = value; }
 
         public double[,] getMA()
         {
@@ -41,6 +45,11 @@ namespace Primitivas_Graficas
         public void addVertice(Ponto vertice)
         {
             vertices.Add(vertice);
+        }
+
+        public void addOriginal(Ponto vertice)
+        {
+            original.Add(vertice);
         }
 
         public bool isFechado()
