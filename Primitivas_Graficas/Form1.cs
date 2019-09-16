@@ -802,9 +802,9 @@ namespace Primitivas_Graficas
             else
                 ey = 0;
 
-            Ponto p = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).Vertices.First();
+            Ponto p = new Ponto(poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).Vertices.First().X, poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).Vertices.First().Y);
 
-            //translacao(p.X * (-1), -p.Y * (-1));
+            //translacao(p.X * (-1), p.Y * (-1));
             escala(ex, ey);
             //translacao(p.X, p.Y);
 
