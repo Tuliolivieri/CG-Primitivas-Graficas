@@ -20,10 +20,14 @@ namespace Primitivas_Graficas
         List<Reta> retas;
         List<Circulo> circulos;
         List<Poligono> poligonos;
+
+        Color cor_ff;
         public Form1()
         {
             InitializeComponent();
             x1 = x2 = y1 = y2 = -1;
+
+            cor_ff = Color.Black;
 
             retas = new List<Reta>();
             circulos = new List<Circulo>();
@@ -483,7 +487,6 @@ namespace Primitivas_Graficas
             pictureBox1.Image = bmp;
         }
 
-
         private void mouseClique(object sender, MouseEventArgs e)
         {
             if(x1 == -1)
@@ -773,6 +776,13 @@ namespace Primitivas_Graficas
             translacao(p.X, p.Y);
             escala(ex, ey);
             translacao(p.X * (-1), p.Y * (-1));
+        }
+
+        private void BtCor_Click(object sender, EventArgs e)
+        {
+            if (colorPicker.ShowDialog() == DialogResult.OK)
+                cor_ff = colorPicker.Color;
+            Console.WriteLine(cor_ff);
         }
 
         public bool isOnPictureBox(int x, int y, PictureBox pb)
