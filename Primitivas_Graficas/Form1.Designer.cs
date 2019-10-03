@@ -44,14 +44,17 @@
             this.cbDeclive = new System.Windows.Forms.CheckBox();
             this.cbEqReal = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPoligonos = new System.Windows.Forms.TabPage();
-            this.colorPicker = new System.Windows.Forms.ColorDialog();
+            this.pictureBoxPoligonos = new System.Windows.Forms.PictureBox();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.btCor = new System.Windows.Forms.Button();
+            this.btFluidFill = new System.Windows.Forms.Button();
             this.panel7 = new System.Windows.Forms.Panel();
             this.btRotacionar = new System.Windows.Forms.Button();
             this.cbEixo = new System.Windows.Forms.CheckBox();
             this.cbOrigem = new System.Windows.Forms.CheckBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbAngulo = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.btEscala = new System.Windows.Forms.Button();
             this.tbEscY = new System.Windows.Forms.TextBox();
@@ -61,7 +64,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.tbTransY = new System.Windows.Forms.TextBox();
             this.tbTransX = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.dgvVertices = new System.Windows.Forms.DataGridView();
@@ -70,24 +72,27 @@
             this.label4 = new System.Windows.Forms.Label();
             this.dgvPoligonos = new System.Windows.Forms.DataGridView();
             this.colPoligonos = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBoxPoligonos = new System.Windows.Forms.PictureBox();
-            this.btCor = new System.Windows.Forms.Button();
-            this.btFluidFill = new System.Windows.Forms.Button();
+            this.colorPicker = new System.Windows.Forms.ColorDialog();
+            this.tbCisX = new System.Windows.Forms.TextBox();
+            this.tbCisY = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btCisalhar = new System.Windows.Forms.Button();
+            this.btEspY = new System.Windows.Forms.Button();
+            this.btEspX = new System.Windows.Forms.Button();
             this.tabPane.SuspendLayout();
             this.tabPrimitivas.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPoligonos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPoligonos)).BeginInit();
             this.panel6.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVertices)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPoligonos)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPoligonos)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPane
@@ -97,7 +102,7 @@
             this.tabPane.Location = new System.Drawing.Point(12, 12);
             this.tabPane.Name = "tabPane";
             this.tabPane.SelectedIndex = 0;
-            this.tabPane.Size = new System.Drawing.Size(1174, 643);
+            this.tabPane.Size = new System.Drawing.Size(1174, 784);
             this.tabPane.TabIndex = 2;
             // 
             // tabPrimitivas
@@ -107,7 +112,7 @@
             this.tabPrimitivas.Location = new System.Drawing.Point(4, 22);
             this.tabPrimitivas.Name = "tabPrimitivas";
             this.tabPrimitivas.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPrimitivas.Size = new System.Drawing.Size(1166, 617);
+            this.tabPrimitivas.Size = new System.Drawing.Size(1166, 758);
             this.tabPrimitivas.TabIndex = 0;
             this.tabPrimitivas.Text = "Primitivas";
             this.tabPrimitivas.UseVisualStyleBackColor = true;
@@ -124,7 +129,7 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(867, 6);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(296, 614);
+            this.panel1.Size = new System.Drawing.Size(296, 746);
             this.panel1.TabIndex = 3;
             // 
             // panel5
@@ -265,6 +270,17 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Retas";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox1.Location = new System.Drawing.Point(6, 6);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(857, 746);
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mouseClique);
+            // 
             // tabPoligonos
             // 
             this.tabPoligonos.Controls.Add(this.pictureBoxPoligonos);
@@ -272,10 +288,21 @@
             this.tabPoligonos.Location = new System.Drawing.Point(4, 22);
             this.tabPoligonos.Name = "tabPoligonos";
             this.tabPoligonos.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPoligonos.Size = new System.Drawing.Size(1166, 617);
+            this.tabPoligonos.Size = new System.Drawing.Size(1166, 758);
             this.tabPoligonos.TabIndex = 1;
             this.tabPoligonos.Text = "Poligonos";
             this.tabPoligonos.UseVisualStyleBackColor = true;
+            // 
+            // pictureBoxPoligonos
+            // 
+            this.pictureBoxPoligonos.BackColor = System.Drawing.SystemColors.Control;
+            this.pictureBoxPoligonos.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBoxPoligonos.Location = new System.Drawing.Point(4, 6);
+            this.pictureBoxPoligonos.Name = "pictureBoxPoligonos";
+            this.pictureBoxPoligonos.Size = new System.Drawing.Size(855, 746);
+            this.pictureBoxPoligonos.TabIndex = 9;
+            this.pictureBoxPoligonos.TabStop = false;
+            this.pictureBoxPoligonos.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mouseCliquePoligono);
             // 
             // panel6
             // 
@@ -284,20 +311,46 @@
             this.panel6.Controls.Add(this.btCor);
             this.panel6.Controls.Add(this.btFluidFill);
             this.panel6.Controls.Add(this.panel7);
-            this.panel6.Controls.Add(this.label3);
             this.panel6.Controls.Add(this.panel4);
             this.panel6.Location = new System.Drawing.Point(865, 6);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(295, 605);
+            this.panel6.Size = new System.Drawing.Size(295, 746);
             this.panel6.TabIndex = 8;
+            // 
+            // btCor
+            // 
+            this.btCor.BackgroundImage = global::Primitivas_Graficas.Properties.Resources.colors;
+            this.btCor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btCor.Location = new System.Drawing.Point(104, 316);
+            this.btCor.Name = "btCor";
+            this.btCor.Size = new System.Drawing.Size(172, 74);
+            this.btCor.TabIndex = 10;
+            this.btCor.UseVisualStyleBackColor = true;
+            this.btCor.Click += new System.EventHandler(this.BtCor_Click);
+            // 
+            // btFluidFill
+            // 
+            this.btFluidFill.BackgroundImage = global::Primitivas_Graficas.Properties.Resources.balde;
+            this.btFluidFill.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btFluidFill.Location = new System.Drawing.Point(9, 316);
+            this.btFluidFill.Name = "btFluidFill";
+            this.btFluidFill.Size = new System.Drawing.Size(88, 74);
+            this.btFluidFill.TabIndex = 3;
+            this.btFluidFill.UseVisualStyleBackColor = true;
             // 
             // panel7
             // 
             this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel7.Controls.Add(this.btEspX);
+            this.panel7.Controls.Add(this.btEspY);
+            this.panel7.Controls.Add(this.btCisalhar);
+            this.panel7.Controls.Add(this.label3);
+            this.panel7.Controls.Add(this.tbCisY);
+            this.panel7.Controls.Add(this.tbCisX);
             this.panel7.Controls.Add(this.btRotacionar);
             this.panel7.Controls.Add(this.cbEixo);
             this.panel7.Controls.Add(this.cbOrigem);
-            this.panel7.Controls.Add(this.textBox1);
+            this.panel7.Controls.Add(this.tbAngulo);
             this.panel7.Controls.Add(this.label9);
             this.panel7.Controls.Add(this.btEscala);
             this.panel7.Controls.Add(this.tbEscY);
@@ -307,19 +360,20 @@
             this.panel7.Controls.Add(this.label7);
             this.panel7.Controls.Add(this.tbTransY);
             this.panel7.Controls.Add(this.tbTransX);
-            this.panel7.Location = new System.Drawing.Point(9, 425);
+            this.panel7.Location = new System.Drawing.Point(9, 396);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(272, 173);
+            this.panel7.Size = new System.Drawing.Size(272, 343);
             this.panel7.TabIndex = 9;
             // 
             // btRotacionar
             // 
             this.btRotacionar.Location = new System.Drawing.Point(170, 112);
             this.btRotacionar.Name = "btRotacionar";
-            this.btRotacionar.Size = new System.Drawing.Size(95, 23);
+            this.btRotacionar.Size = new System.Drawing.Size(95, 43);
             this.btRotacionar.TabIndex = 12;
             this.btRotacionar.Text = "Rotacionar";
             this.btRotacionar.UseVisualStyleBackColor = true;
+            this.btRotacionar.Click += new System.EventHandler(this.BtRotacionar_Click);
             // 
             // cbEixo
             // 
@@ -341,12 +395,12 @@
             this.cbOrigem.Text = "Origem";
             this.cbOrigem.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // tbAngulo
             // 
-            this.textBox1.Location = new System.Drawing.Point(5, 114);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(76, 20);
-            this.textBox1.TabIndex = 9;
+            this.tbAngulo.Location = new System.Drawing.Point(5, 114);
+            this.tbAngulo.Name = "tbAngulo";
+            this.tbAngulo.Size = new System.Drawing.Size(76, 20);
+            this.tbAngulo.TabIndex = 9;
             // 
             // label9
             // 
@@ -423,16 +477,6 @@
             this.tbTransX.Size = new System.Drawing.Size(77, 20);
             this.tbTransX.TabIndex = 0;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(12, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(78, 20);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Polígonos";
-            // 
             // panel4
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -440,7 +484,7 @@
             this.panel4.Controls.Add(this.dgvVertices);
             this.panel4.Controls.Add(this.label4);
             this.panel4.Controls.Add(this.dgvPoligonos);
-            this.panel4.Location = new System.Drawing.Point(9, 32);
+            this.panel4.Location = new System.Drawing.Point(9, 3);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(272, 307);
             this.panel4.TabIndex = 7;
@@ -514,55 +558,63 @@
             this.colPoligonos.Name = "colPoligonos";
             this.colPoligonos.ReadOnly = true;
             // 
-            // pictureBox1
+            // tbCisX
             // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Location = new System.Drawing.Point(6, 6);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(857, 614);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mouseClique);
+            this.tbCisX.Location = new System.Drawing.Point(5, 184);
+            this.tbCisX.Name = "tbCisX";
+            this.tbCisX.Size = new System.Drawing.Size(76, 20);
+            this.tbCisX.TabIndex = 13;
             // 
-            // pictureBoxPoligonos
+            // tbCisY
             // 
-            this.pictureBoxPoligonos.BackColor = System.Drawing.SystemColors.Control;
-            this.pictureBoxPoligonos.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBoxPoligonos.Location = new System.Drawing.Point(4, 6);
-            this.pictureBoxPoligonos.Name = "pictureBoxPoligonos";
-            this.pictureBoxPoligonos.Size = new System.Drawing.Size(855, 605);
-            this.pictureBoxPoligonos.TabIndex = 9;
-            this.pictureBoxPoligonos.TabStop = false;
-            this.pictureBoxPoligonos.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mouseCliquePoligono);
+            this.tbCisY.Location = new System.Drawing.Point(88, 184);
+            this.tbCisY.Name = "tbCisY";
+            this.tbCisY.Size = new System.Drawing.Size(75, 20);
+            this.tbCisY.TabIndex = 14;
             // 
-            // btCor
+            // label3
             // 
-            this.btCor.BackgroundImage = global::Primitivas_Graficas.Properties.Resources.colors;
-            this.btCor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btCor.Location = new System.Drawing.Point(104, 345);
-            this.btCor.Name = "btCor";
-            this.btCor.Size = new System.Drawing.Size(172, 74);
-            this.btCor.TabIndex = 10;
-            this.btCor.UseVisualStyleBackColor = true;
-            this.btCor.Click += new System.EventHandler(this.BtCor_Click);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(4, 168);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(139, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Cisalhamento (Cis. X, Cis. Y)";
             // 
-            // btFluidFill
+            // btCisalhar
             // 
-            this.btFluidFill.BackgroundImage = global::Primitivas_Graficas.Properties.Resources.balde;
-            this.btFluidFill.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btFluidFill.Location = new System.Drawing.Point(9, 345);
-            this.btFluidFill.Name = "btFluidFill";
-            this.btFluidFill.Size = new System.Drawing.Size(88, 74);
-            this.btFluidFill.TabIndex = 3;
-            this.btFluidFill.UseVisualStyleBackColor = true;
+            this.btCisalhar.Location = new System.Drawing.Point(170, 182);
+            this.btCisalhar.Name = "btCisalhar";
+            this.btCisalhar.Size = new System.Drawing.Size(94, 23);
+            this.btCisalhar.TabIndex = 16;
+            this.btCisalhar.Text = "Cisalhar";
+            this.btCisalhar.UseVisualStyleBackColor = true;
+            this.btCisalhar.Click += new System.EventHandler(this.BtCisalhar_Click);
+            // 
+            // btEspY
+            // 
+            this.btEspY.Location = new System.Drawing.Point(136, 226);
+            this.btEspY.Name = "btEspY";
+            this.btEspY.Size = new System.Drawing.Size(128, 23);
+            this.btEspY.TabIndex = 20;
+            this.btEspY.Text = "Espelhar em Y";
+            this.btEspY.UseVisualStyleBackColor = true;
+            // 
+            // btEspX
+            // 
+            this.btEspX.Location = new System.Drawing.Point(4, 226);
+            this.btEspX.Name = "btEspX";
+            this.btEspX.Size = new System.Drawing.Size(129, 23);
+            this.btEspX.TabIndex = 21;
+            this.btEspX.Text = "Espelhar em X";
+            this.btEspX.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightBlue;
-            this.ClientSize = new System.Drawing.Size(1197, 667);
+            this.ClientSize = new System.Drawing.Size(1197, 808);
             this.Controls.Add(this.tabPane);
             this.Name = "Form1";
             this.Text = "Primitivas Graficas";
@@ -576,17 +628,16 @@
             this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPoligonos.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPoligonos)).EndInit();
             this.panel6.ResumeLayout(false);
-            this.panel6.PerformLayout();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVertices)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPoligonos)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPoligonos)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -611,7 +662,6 @@
         private System.Windows.Forms.DataGridView dgvVertices;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridView dgvPoligonos;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.CheckBox cbElipse;
         private System.Windows.Forms.Label label6;
@@ -634,11 +684,17 @@
         private System.Windows.Forms.Button btRotacionar;
         private System.Windows.Forms.CheckBox cbEixo;
         private System.Windows.Forms.CheckBox cbOrigem;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbAngulo;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btFluidFill;
         private System.Windows.Forms.ColorDialog colorPicker;
         private System.Windows.Forms.Button btCor;
+        private System.Windows.Forms.Button btCisalhar;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox tbCisY;
+        private System.Windows.Forms.TextBox tbCisX;
+        private System.Windows.Forms.Button btEspX;
+        private System.Windows.Forms.Button btEspY;
     }
 }
 

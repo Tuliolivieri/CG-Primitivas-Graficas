@@ -730,18 +730,6 @@ namespace Primitivas_Graficas
 
             double[,] MA = pol.getMA();
 
-            Console.WriteLine(m_tlc_co[0, 0] + ", " + m_tlc_co[0, 1] + ", " + m_tlc_co[0, 2] + ", ");
-            Console.WriteLine(m_tlc_co[1, 0] + ", " + m_tlc_co[1, 1] + ", " + m_tlc_co[1, 2] + ", ");
-            Console.WriteLine(m_tlc_co[2, 0] + ", " + m_tlc_co[2, 1] + ", " + m_tlc_co[2, 2] + ", ");
-
-            Console.WriteLine(m_tlc_oc[0, 0] + ", " + m_tlc_oc[0, 1] + ", " + m_tlc_oc[0, 2] + ", ");
-            Console.WriteLine(m_tlc_oc[1, 0] + ", " + m_tlc_oc[1, 1] + ", " + m_tlc_oc[1, 2] + ", ");
-            Console.WriteLine(m_tlc_oc[2, 0] + ", " + m_tlc_oc[2, 1] + ", " + m_tlc_oc[2, 2] + ", ");
-
-            Console.WriteLine(MA[0, 0] + ", " + MA[0, 1] + ", " + MA[0, 2] + ", ");
-            Console.WriteLine(MA[1, 0] + ", " + MA[1, 1] + ", " + MA[1, 2] + ", ");
-            Console.WriteLine(MA[2, 0] + ", " + MA[2, 1] + ", " + MA[2, 2] + ", ");
-
             Ponto p, po;
 
             for (int i = 0; i < pol.Vertices.Count; i++)
@@ -783,6 +771,267 @@ namespace Primitivas_Graficas
             if (colorPicker.ShowDialog() == DialogResult.OK)
                 cor_ff = colorPicker.Color;
             Console.WriteLine(cor_ff);
+        }
+
+        private void rotacaoOrigem(double angulo)
+        {
+            angulo = angulo * (Math.PI / 180);  /// CONVERTENDO PRA RADIANOS
+
+            double[,] mt = new double[3, 3];
+
+            mt[2, 2] = 1;
+
+            mt[0, 0] = mt[1, 1] = Math.Cos(angulo);
+            mt[0, 1] = Math.Sin(angulo) * (-1);
+            mt[1, 0] = Math.Sin(angulo);
+
+            Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
+
+            //pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_oc));
+            pol.setMA(multiplicaMatriz(pol.getMA(), mt));
+            //pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_co));
+
+            double[,] MA = pol.getMA();
+
+            Ponto p, po;
+
+            for (int i = 0; i < pol.Vertices.Count; i++)
+            {
+                p = pol.Vertices.ElementAt(i);
+                po = pol.Original.ElementAt(i);
+
+                p.X = (int)(po.X * Math.Cos(angulo) - po.Y * Math.Sin(angulo));
+                p.Y = (int)(po.X * Math.Sin(angulo) + po.Y * Math.Cos(angulo));
+            }
+            redesenhaPoligonos();
+        }
+
+        private void rotacaoEixo(double angulo)
+        {
+            angulo = angulo * (Math.PI / 180);  /// CONVERTENDO PRA RADIANOS
+
+            double[,] mt = new double[3, 3];
+
+            mt[2, 2] = 1;
+
+            mt[0, 0] = mt[1, 1] = Math.Cos(angulo);
+            mt[0, 1] = Math.Sin(angulo) * (-1);
+            mt[1, 0] = Math.Sin(angulo);
+
+            Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
+
+            Ponto centro = new Ponto(0, 0);
+            Ponto pc;
+            int x, y;
+            x = y = 0;
+            for (int k = 0; k < pol.Original.Count - 1; k++)
+            {
+                x += pol.Original.ElementAt(k).X;
+                y += pol.Original.ElementAt(k).Y;
+
+                Console.WriteLine(pol.Original.ElementAt(k).X + " - " + pol.Original.ElementAt(k).Y);
+            }
+            Console.WriteLine("Total = " + x + " - " + y);
+
+            x /= pol.Original.Count - 1;
+            y /= pol.Original.Count - 1;
+
+            Console.WriteLine("X= " + x);
+
+            double[,] m_tlc_co = new double[3, 3];
+            double[,] m_tlc_oc = new double[3, 3];
+
+            m_tlc_co[0, 0] = m_tlc_co[1, 1] = m_tlc_co[2, 2] = 1;
+            m_tlc_oc[0, 0] = m_tlc_oc[1, 1] = m_tlc_oc[2, 2] = 1;
+
+            m_tlc_co[0, 2] = x * (-1);
+            m_tlc_co[1, 2] = y * (-1);
+
+            m_tlc_oc[0, 2] = x;
+            m_tlc_oc[1, 2] = y;
+
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_oc));
+            pol.setMA(multiplicaMatriz(pol.getMA(), mt));
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_co));
+
+            double[,] MA = pol.getMA();
+
+            Ponto p, po;
+
+            for (int i = 0; i < pol.Vertices.Count; i++)
+            {
+                p = pol.Vertices.ElementAt(i);
+                po = pol.Original.ElementAt(i);
+
+                p.X = (int)(po.X * MA[0, 0] + po.Y * MA[0, 1] + MA[0, 2]);
+                p.Y = (int)(po.X * MA[1, 0] + po.Y * MA[1, 1] + MA[1, 2]);
+            }
+            redesenhaPoligonos();
+        }
+
+        private void BtRotacionar_Click(object sender, EventArgs e)
+        {
+            double[,] mt = new double[3, 3];
+
+            double ex, ey;
+
+            mt[2, 2] = 1;
+
+            mt[2, 2] = 1;
+            mt[2, 2] = 1;
+
+            double ang;
+
+            if (tbAngulo.Text.Length > 0)
+                double.TryParse(tbAngulo.Text, out ang);
+            else
+                ang = 0;
+
+            Ponto p = new Ponto(poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).Vertices.First().X, poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).Vertices.First().Y);
+            
+            if (cbEixo.CheckState == CheckState.Checked)
+            {
+                rotacaoEixo(ang);
+            }
+            else if(cbOrigem.CheckState == CheckState.Checked)
+            {
+                rotacaoOrigem(ang);
+            }
+        }
+
+        private void cisalhamentoX(double fator)
+        {
+            double[,] mt = new double[3, 3];
+
+            mt[2, 2] = mt[0, 0] = mt[1, 1] = 1;
+            mt[1, 0] = fator;
+
+            Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
+
+            Ponto centro = new Ponto(0, 0);
+            Ponto pc;
+            int x, y;
+            x = y = 0;
+            for (int k = 0; k < pol.Original.Count - 1; k++)
+            {
+                x += pol.Original.ElementAt(k).X;
+                y += pol.Original.ElementAt(k).Y;
+
+                Console.WriteLine(pol.Original.ElementAt(k).X + " - " + pol.Original.ElementAt(k).Y);
+            }
+            Console.WriteLine("Total = " + x + " - " + y);
+
+            x /= pol.Original.Count - 1;
+            y /= pol.Original.Count - 1;
+
+            Console.WriteLine("X= " + x);
+
+            double[,] m_tlc_co = new double[3, 3];
+            double[,] m_tlc_oc = new double[3, 3];
+
+            m_tlc_co[0, 0] = m_tlc_co[1, 1] = m_tlc_co[2, 2] = 1;
+            m_tlc_oc[0, 0] = m_tlc_oc[1, 1] = m_tlc_oc[2, 2] = 1;
+
+            m_tlc_co[0, 2] = x * (-1);
+            m_tlc_co[1, 2] = y * (-1);
+
+            m_tlc_oc[0, 2] = x;
+            m_tlc_oc[1, 2] = y;
+
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_oc));
+            pol.setMA(multiplicaMatriz(pol.getMA(), mt));
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_co));
+
+            double[,] MA = pol.getMA();
+
+            Ponto p, po;
+
+            for (int i = 0; i < pol.Vertices.Count; i++)
+            {
+                p = pol.Vertices.ElementAt(i);
+                po = pol.Original.ElementAt(i);
+
+                p.X = (int)(po.X * MA[0, 0] + po.Y * MA[0, 1] + MA[0, 2]);
+                p.Y = (int)(po.X * MA[1, 0] + po.Y * MA[1, 1] + MA[1, 2]);
+            }
+           // redesenhaPoligonos();
+        }
+
+        private void cisalhamentoY(double fator)
+        {
+            double[,] mt = new double[3, 3];
+
+            mt[2, 2] = mt[0, 0] = mt[1, 1] = 1;
+            mt[0, 1] = fator;
+
+            Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
+
+            Ponto centro = new Ponto(0, 0);
+            Ponto pc;
+            int x, y;
+            x = y = 0;
+            for (int k = 0; k < pol.Original.Count - 1; k++)
+            {
+                x += pol.Original.ElementAt(k).X;
+                y += pol.Original.ElementAt(k).Y;
+
+                Console.WriteLine(pol.Original.ElementAt(k).X + " - " + pol.Original.ElementAt(k).Y);
+            }
+            Console.WriteLine("Total = " + x + " - " + y);
+
+            x /= pol.Original.Count - 1;
+            y /= pol.Original.Count - 1;
+
+            Console.WriteLine("X= " + x);
+
+            double[,] m_tlc_co = new double[3, 3];
+            double[,] m_tlc_oc = new double[3, 3];
+
+            m_tlc_co[0, 0] = m_tlc_co[1, 1] = m_tlc_co[2, 2] = 1;
+            m_tlc_oc[0, 0] = m_tlc_oc[1, 1] = m_tlc_oc[2, 2] = 1;
+
+            m_tlc_co[0, 2] = x * (-1);
+            m_tlc_co[1, 2] = y * (-1);
+
+            m_tlc_oc[0, 2] = x;
+            m_tlc_oc[1, 2] = y;
+
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_oc));
+            pol.setMA(multiplicaMatriz(pol.getMA(), mt));
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_co));
+
+            double[,] MA = pol.getMA();
+
+            Ponto p, po;
+
+            for (int i = 0; i < pol.Vertices.Count; i++)
+            {
+                p = pol.Vertices.ElementAt(i);
+                po = pol.Original.ElementAt(i);
+
+                p.X = (int)(po.X * MA[0, 0] + po.Y * MA[0, 1] + MA[0, 2]);
+                p.Y = (int)(po.X * MA[1, 0] + po.Y * MA[1, 1] + MA[1, 2]);
+            }
+            //redesenhaPoligonos();
+        }
+
+        private void BtCisalhar_Click(object sender, EventArgs e)
+        {
+            double fatorx, fatory;
+
+            if (tbCisX.Text.Length > 0)
+                double.TryParse(tbCisX.Text, out fatorx);
+            else
+                fatorx = 0;
+
+            if (tbCisY.Text.Length > 0)
+                double.TryParse(tbCisY.Text, out fatory);
+            else
+                fatory = 0;
+
+            cisalhamentoX(fatorx);
+            cisalhamentoY(fatory);
+            redesenhaPoligonos();
         }
 
         public bool isOnPictureBox(int x, int y, PictureBox pb)
