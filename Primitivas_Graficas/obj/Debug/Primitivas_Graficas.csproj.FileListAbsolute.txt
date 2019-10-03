@@ -28,3 +28,13 @@ D:\Primitivas_Graficas\Primitivas_Graficas\obj\Debug\Primitivas_Graficas.csproj.
 D:\Primitivas_Graficas\Primitivas_Graficas\obj\Debug\Primitivas_Graficas.csproj.CoreCompileInputs.cache
 D:\Primitivas_Graficas\Primitivas_Graficas\obj\Debug\Primitivas_Graficas.exe
 D:\Primitivas_Graficas\Primitivas_Graficas\obj\Debug\Primitivas_Graficas.pdb
+E:\Primitivas_Graficas\Primitivas_Graficas\bin\Debug\Primitivas_Graficas.exe.config
+E:\Primitivas_Graficas\Primitivas_Graficas\bin\Debug\Primitivas_Graficas.exe
+E:\Primitivas_Graficas\Primitivas_Graficas\bin\Debug\Primitivas_Graficas.pdb
+E:\Primitivas_Graficas\Primitivas_Graficas\obj\Debug\Primitivas_Graficas.csprojAssemblyReference.cache
+E:\Primitivas_Graficas\Primitivas_Graficas\obj\Debug\Primitivas_Graficas.Form1.resources
+E:\Primitivas_Graficas\Primitivas_Graficas\obj\Debug\Primitivas_Graficas.Properties.Resources.resources
+E:\Primitivas_Graficas\Primitivas_Graficas\obj\Debug\Primitivas_Graficas.csproj.GenerateResource.cache
+E:\Primitivas_Graficas\Primitivas_Graficas\obj\Debug\Primitivas_Graficas.csproj.CoreCompileInputs.cache
+E:\Primitivas_Graficas\Primitivas_Graficas\obj\Debug\Primitivas_Graficas.exe
+E:\Primitivas_Graficas\Primitivas_Graficas\obj\Debug\Primitivas_Graficas.pdb

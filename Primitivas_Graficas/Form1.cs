@@ -800,8 +800,8 @@ namespace Primitivas_Graficas
                 p = pol.Vertices.ElementAt(i);
                 po = pol.Original.ElementAt(i);
 
-                p.X = (int)(po.X * Math.Cos(angulo) - po.Y * Math.Sin(angulo));
-                p.Y = (int)(po.X * Math.Sin(angulo) + po.Y * Math.Cos(angulo));
+                p.X = (int)(po.X * MA[0, 0] + po.Y * MA[0, 1] + MA[0, 2]);
+                p.Y = (int)(po.X * MA[1, 0] + po.Y * MA[1, 1] + MA[1, 2]);
             }
             redesenhaPoligonos();
         }
