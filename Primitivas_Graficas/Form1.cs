@@ -13,6 +13,7 @@ namespace Primitivas_Graficas
     public partial class Form1 : Form
     {
         private int x1, x2, y1, y2;
+        private Boolean modoPintar;
 
         Ponto p1, p2;
         Poligono p_novo;
@@ -43,6 +44,8 @@ namespace Primitivas_Graficas
 
             Bitmap bmp2 = new Bitmap(pictureBoxPoligonos.Width, pictureBoxPoligonos.Height);
             pictureBoxPoligonos.Image = bmp2;
+
+            modoPintar = false;
         }
 
         private void EquacaoDaReta()    /// FUNCIONA
@@ -569,7 +572,11 @@ namespace Primitivas_Graficas
 
         private void mouseCliquePoligono(object sender, MouseEventArgs e)
         {
-            if(p1.X == -1)
+            if(modoPintar == true)
+            {
+                floodFill(e.X, e.Y);
+            }
+            else if(p1.X == -1)
             {
                 p1.X = e.X;
                 p1.Y = e.Y;
@@ -1034,6 +1041,130 @@ namespace Primitivas_Graficas
             redesenhaPoligonos();
         }
 
+        private void BtEspX_Click(object sender, EventArgs e)
+        {
+            double[,] mt = new double[3, 3];
+
+            mt[2, 2] = mt[0, 0] = 1;
+            mt[1, 1] = -1;
+
+            Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
+
+            Ponto centro = new Ponto(0, 0);
+            Ponto pc;
+            int x, y;
+            x = y = 0;
+            for (int k = 0; k < pol.Original.Count - 1; k++)
+            {
+                x += pol.Original.ElementAt(k).X;
+                y += pol.Original.ElementAt(k).Y;
+
+                Console.WriteLine(pol.Original.ElementAt(k).X + " - " + pol.Original.ElementAt(k).Y);
+            }
+            Console.WriteLine("Total = " + x + " - " + y);
+
+            x /= pol.Original.Count - 1;
+            y /= pol.Original.Count - 1;
+
+            Console.WriteLine("X= " + x);
+
+            double[,] m_tlc_co = new double[3, 3];
+            double[,] m_tlc_oc = new double[3, 3];
+
+            m_tlc_co[0, 0] = m_tlc_co[1, 1] = m_tlc_co[2, 2] = 1;
+            m_tlc_oc[0, 0] = m_tlc_oc[1, 1] = m_tlc_oc[2, 2] = 1;
+
+            m_tlc_co[0, 2] = x * (-1);
+            m_tlc_co[1, 2] = y * (-1);
+
+            m_tlc_oc[0, 2] = x;
+            m_tlc_oc[1, 2] = y;
+
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_oc));
+            pol.setMA(multiplicaMatriz(pol.getMA(), mt));
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_co));
+
+            double[,] MA = pol.getMA();
+
+            Ponto p, po;
+
+            for (int i = 0; i < pol.Vertices.Count; i++)
+            {
+                p = pol.Vertices.ElementAt(i);
+                po = pol.Original.ElementAt(i);
+
+                p.X = (int)(po.X * MA[0, 0] + po.Y * MA[0, 1] + MA[0, 2]);
+                p.Y = (int)(po.X * MA[1, 0] + po.Y * MA[1, 1] + MA[1, 2]);
+            }
+            redesenhaPoligonos();
+        }
+
+        private void BtEspY_Click(object sender, EventArgs e)
+        {
+            double[,] mt = new double[3, 3];
+
+            mt[2, 2] = mt[1, 1] = 1;
+            mt[0, 0] = -1;
+
+            Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
+
+            Ponto centro = new Ponto(0, 0);
+            Ponto pc;
+            int x, y;
+            x = y = 0;
+            for (int k = 0; k < pol.Original.Count - 1; k++)
+            {
+                x += pol.Original.ElementAt(k).X;
+                y += pol.Original.ElementAt(k).Y;
+
+                Console.WriteLine(pol.Original.ElementAt(k).X + " - " + pol.Original.ElementAt(k).Y);
+            }
+            Console.WriteLine("Total = " + x + " - " + y);
+
+            x /= pol.Original.Count - 1;
+            y /= pol.Original.Count - 1;
+
+            Console.WriteLine("X= " + x);
+
+            double[,] m_tlc_co = new double[3, 3];
+            double[,] m_tlc_oc = new double[3, 3];
+
+            m_tlc_co[0, 0] = m_tlc_co[1, 1] = m_tlc_co[2, 2] = 1;
+            m_tlc_oc[0, 0] = m_tlc_oc[1, 1] = m_tlc_oc[2, 2] = 1;
+
+            m_tlc_co[0, 2] = x * (-1);
+            m_tlc_co[1, 2] = y * (-1);
+
+            m_tlc_oc[0, 2] = x;
+            m_tlc_oc[1, 2] = y;
+
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_oc));
+            pol.setMA(multiplicaMatriz(pol.getMA(), mt));
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_co));
+
+            double[,] MA = pol.getMA();
+
+            Ponto p, po;
+
+            for (int i = 0; i < pol.Vertices.Count; i++)
+            {
+                p = pol.Vertices.ElementAt(i);
+                po = pol.Original.ElementAt(i);
+
+                p.X = (int)(po.X * MA[0, 0] + po.Y * MA[0, 1] + MA[0, 2]);
+                p.Y = (int)(po.X * MA[1, 0] + po.Y * MA[1, 1] + MA[1, 2]);
+            }
+            redesenhaPoligonos();
+        }
+
+        private void BtFluidFill_Click_1(object sender, EventArgs e)
+        {
+            if (modoPintar == false)
+                modoPintar = true;
+            else
+                modoPintar = false;
+        }
+
         public bool isOnPictureBox(int x, int y, PictureBox pb)
         {
             return x >= 0 && x < pb.Width && y >= 0 && y < pb.Height;
@@ -1101,6 +1232,34 @@ namespace Primitivas_Graficas
             }
 
             pictureBoxPoligonos.Image = bmp;
+        }
+
+        private void floodFill(int x, int y)
+        {
+            Bitmap bmp = new Bitmap(pictureBoxPoligonos.Image);
+            Color cor = Color.FromArgb(bmp.GetPixel(x, y).R, bmp.GetPixel(x, y).G, bmp.GetPixel(x, y).B);
+            Color c_atual;
+
+            Stack<Ponto> pilha = new Stack<Ponto>();
+
+            Ponto p = new Ponto(x, y);
+
+            pilha.Push(p);
+
+            while(pilha.Count > 0)
+            {
+                p = pilha.Pop();
+
+                c_atual = Color.FromArgb(bmp.GetPixel(p.X, p.Y).R, bmp.GetPixel(p.X, p.Y).G, bmp.GetPixel(p.X, p.Y).B);
+
+                if (c_atual == cor)
+                {
+                    bmp.SetPixel(x, y, cor_ff);
+                    
+                    
+                }
+                    
+            }
         }
     }
 }

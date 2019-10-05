@@ -51,6 +51,12 @@
             this.btCor = new System.Windows.Forms.Button();
             this.btFluidFill = new System.Windows.Forms.Button();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.btEspX = new System.Windows.Forms.Button();
+            this.btEspY = new System.Windows.Forms.Button();
+            this.btCisalhar = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tbCisY = new System.Windows.Forms.TextBox();
+            this.tbCisX = new System.Windows.Forms.TextBox();
             this.btRotacionar = new System.Windows.Forms.Button();
             this.cbEixo = new System.Windows.Forms.CheckBox();
             this.cbOrigem = new System.Windows.Forms.CheckBox();
@@ -73,12 +79,6 @@
             this.dgvPoligonos = new System.Windows.Forms.DataGridView();
             this.colPoligonos = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colorPicker = new System.Windows.Forms.ColorDialog();
-            this.tbCisX = new System.Windows.Forms.TextBox();
-            this.tbCisY = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.btCisalhar = new System.Windows.Forms.Button();
-            this.btEspY = new System.Windows.Forms.Button();
-            this.btEspX = new System.Windows.Forms.Button();
             this.tabPane.SuspendLayout();
             this.tabPrimitivas.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -337,6 +337,7 @@
             this.btFluidFill.Size = new System.Drawing.Size(88, 74);
             this.btFluidFill.TabIndex = 3;
             this.btFluidFill.UseVisualStyleBackColor = true;
+            this.btFluidFill.Click += new System.EventHandler(this.BtFluidFill_Click_1);
             // 
             // panel7
             // 
@@ -364,6 +365,59 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(272, 343);
             this.panel7.TabIndex = 9;
+            // 
+            // btEspX
+            // 
+            this.btEspX.Location = new System.Drawing.Point(4, 226);
+            this.btEspX.Name = "btEspX";
+            this.btEspX.Size = new System.Drawing.Size(129, 23);
+            this.btEspX.TabIndex = 21;
+            this.btEspX.Text = "Espelhar em X";
+            this.btEspX.UseVisualStyleBackColor = true;
+            this.btEspX.Click += new System.EventHandler(this.BtEspX_Click);
+            // 
+            // btEspY
+            // 
+            this.btEspY.Location = new System.Drawing.Point(136, 226);
+            this.btEspY.Name = "btEspY";
+            this.btEspY.Size = new System.Drawing.Size(128, 23);
+            this.btEspY.TabIndex = 20;
+            this.btEspY.Text = "Espelhar em Y";
+            this.btEspY.UseVisualStyleBackColor = true;
+            this.btEspY.Click += new System.EventHandler(this.BtEspY_Click);
+            // 
+            // btCisalhar
+            // 
+            this.btCisalhar.Location = new System.Drawing.Point(170, 182);
+            this.btCisalhar.Name = "btCisalhar";
+            this.btCisalhar.Size = new System.Drawing.Size(94, 23);
+            this.btCisalhar.TabIndex = 16;
+            this.btCisalhar.Text = "Cisalhar";
+            this.btCisalhar.UseVisualStyleBackColor = true;
+            this.btCisalhar.Click += new System.EventHandler(this.BtCisalhar_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(4, 168);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(139, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Cisalhamento (Cis. X, Cis. Y)";
+            // 
+            // tbCisY
+            // 
+            this.tbCisY.Location = new System.Drawing.Point(88, 184);
+            this.tbCisY.Name = "tbCisY";
+            this.tbCisY.Size = new System.Drawing.Size(75, 20);
+            this.tbCisY.TabIndex = 14;
+            // 
+            // tbCisX
+            // 
+            this.tbCisX.Location = new System.Drawing.Point(5, 184);
+            this.tbCisX.Name = "tbCisX";
+            this.tbCisX.Size = new System.Drawing.Size(76, 20);
+            this.tbCisX.TabIndex = 13;
             // 
             // btRotacionar
             // 
@@ -557,57 +611,6 @@
             this.colPoligonos.HeaderText = "Poligonos";
             this.colPoligonos.Name = "colPoligonos";
             this.colPoligonos.ReadOnly = true;
-            // 
-            // tbCisX
-            // 
-            this.tbCisX.Location = new System.Drawing.Point(5, 184);
-            this.tbCisX.Name = "tbCisX";
-            this.tbCisX.Size = new System.Drawing.Size(76, 20);
-            this.tbCisX.TabIndex = 13;
-            // 
-            // tbCisY
-            // 
-            this.tbCisY.Location = new System.Drawing.Point(88, 184);
-            this.tbCisY.Name = "tbCisY";
-            this.tbCisY.Size = new System.Drawing.Size(75, 20);
-            this.tbCisY.TabIndex = 14;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 168);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(139, 13);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "Cisalhamento (Cis. X, Cis. Y)";
-            // 
-            // btCisalhar
-            // 
-            this.btCisalhar.Location = new System.Drawing.Point(170, 182);
-            this.btCisalhar.Name = "btCisalhar";
-            this.btCisalhar.Size = new System.Drawing.Size(94, 23);
-            this.btCisalhar.TabIndex = 16;
-            this.btCisalhar.Text = "Cisalhar";
-            this.btCisalhar.UseVisualStyleBackColor = true;
-            this.btCisalhar.Click += new System.EventHandler(this.BtCisalhar_Click);
-            // 
-            // btEspY
-            // 
-            this.btEspY.Location = new System.Drawing.Point(136, 226);
-            this.btEspY.Name = "btEspY";
-            this.btEspY.Size = new System.Drawing.Size(128, 23);
-            this.btEspY.TabIndex = 20;
-            this.btEspY.Text = "Espelhar em Y";
-            this.btEspY.UseVisualStyleBackColor = true;
-            // 
-            // btEspX
-            // 
-            this.btEspX.Location = new System.Drawing.Point(4, 226);
-            this.btEspX.Name = "btEspX";
-            this.btEspX.Size = new System.Drawing.Size(129, 23);
-            this.btEspX.TabIndex = 21;
-            this.btEspX.Text = "Espelhar em X";
-            this.btEspX.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
