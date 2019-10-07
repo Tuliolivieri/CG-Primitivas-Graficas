@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -1170,6 +1171,223 @@ namespace Primitivas_Graficas
             return x >= 0 && x < pb.Width && y >= 0 && y < pb.Height;
         }
 
+        private void viewPort(int w, int h)
+        {
+            double du = w;
+            double dv = h;
+            double dx, dy, ex, ey;
+
+
+            int xmin, xmax, ymin, ymax;
+
+            double[,] mt = new double[3, 3];
+
+            mt[2, 2] = 1;
+
+            Poligono pol = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index);
+
+            Ponto centro = new Ponto(0, 0);
+            Ponto pc;
+            int x, y;
+            x = y = 0;
+
+            xmin = xmax = pol.Original.ElementAt(0).X;
+            ymin = ymax = pol.Original.ElementAt(0).Y;
+
+            for (int k = 0; k < pol.Original.Count - 1; k++)
+            {
+                if (pol.Original.ElementAt(k).X < xmin)
+                    xmin = pol.Original.ElementAt(k).X;
+                else if(pol.Original.ElementAt(k).X > xmax)
+                    xmax = pol.Original.ElementAt(k).X;
+
+                if (pol.Original.ElementAt(k).Y < ymin)
+                    ymin = pol.Original.ElementAt(k).Y;
+                else if (pol.Original.ElementAt(k).Y > ymax)
+                    ymax = pol.Original.ElementAt(k).Y;
+
+                x += pol.Original.ElementAt(k).X;
+                y += pol.Original.ElementAt(k).Y;
+            }
+            Console.WriteLine("Total = " + x + " - " + y);
+
+            x /= pol.Original.Count - 1;
+            y /= pol.Original.Count - 1;
+
+            double[,] m_tlc_co = new double[3, 3];
+            double[,] m_tlc_oc = new double[3, 3];
+
+            m_tlc_co[0, 0] = m_tlc_co[1, 1] = m_tlc_co[2, 2] = 1;
+            m_tlc_oc[0, 0] = m_tlc_oc[1, 1] = m_tlc_oc[2, 2] = 1;
+
+            m_tlc_co[0, 2] = x * (-1);
+            m_tlc_co[1, 2] = y * (-1);
+
+            m_tlc_oc[0, 2] = x;
+            m_tlc_oc[1, 2] = y;
+
+            dx = xmax - xmin;
+            dy = ymax - ymin;
+
+            ex = du / dx;
+            ey = dv / dy;
+
+            mt[0, 0] = ex;
+            mt[1, 1] = ey;
+            mt[0, 2] = -xmin * ex;
+            mt[1, 2] = -ymin * ey;
+
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_oc));
+            pol.setMA(multiplicaMatriz(pol.getMA(), mt));
+            pol.setMA(multiplicaMatriz(pol.getMA(), m_tlc_co));
+
+            double[,] MA = pol.getMA();
+
+            Ponto p, po;
+
+            for (int i = 0; i < pol.Vertices.Count; i++)
+            {
+                p = pol.Vertices.ElementAt(i);
+                po = pol.Original.ElementAt(i);
+
+                p.X = (int)(po.X * MA[0, 0] + po.Y * MA[0, 1] + MA[0, 2]);
+                p.Y = (int)(po.X * MA[1, 0] + po.Y * MA[1, 1] + MA[1, 2]);
+            }
+            redesenhaPoligonos();
+        }
+
+        private void BtViewPort_Click(object sender, EventArgs e)
+        {
+            int w, h;
+
+            if (tbU.Text.Length > 0)
+                int.TryParse(tbU.Text, out w);
+            else
+                w = 0;
+
+            if (tbV.Text.Length > 0)
+                int.TryParse(tbV.Text, out h);
+            else
+                h = 0;
+
+            viewPort(w, h);
+        }
+
+        private void BtScanLine_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp = new Bitmap(pictureBoxPoligonos.Image);
+
+            //if(dgvPoligonos.SelectedRows.Count > 0)
+            {
+                ET et = new ET(bmp.Height);
+                AET aet = new AET();
+                List<No> lista;
+                List<Ponto> pontos = poligonos.ElementAt(dgvPoligonos.CurrentRow.Index).Vertices;
+
+                double xmin, xmax, ymin, ymax, incx, dx, dy;
+                int y, cont, tl_aet, tl_et;
+
+                for (int i = 0; i < pontos.Count - 1; i++)
+                {
+                    if (pontos.ElementAt(i).Y >= pontos.ElementAt(i + 1).Y)
+                    {
+                        xmax = pontos.ElementAt(i).X;
+                        ymax = pontos.ElementAt(i).Y;
+                        xmin = pontos.ElementAt(i + 1).X;
+                        ymin = pontos.ElementAt(i + 1).Y;
+                    }
+                    else
+                    {
+                        xmin = pontos.ElementAt(i).X;
+                        ymin = pontos.ElementAt(i).Y;
+                        xmax = pontos.ElementAt(i + 1).X;
+                        ymax = pontos.ElementAt(i + 1).Y;
+                    }
+                    dx = xmax - xmin;
+                    dy = ymax - ymin;
+                    incx = dx / dy;
+
+                    y = (int)ymin;
+
+                    if (y < 0)
+                        y = 0;
+                    else if (y >= bmp.Height)
+                        y = bmp.Height - 1;
+
+                    if (et.getAET(y) == null)
+                        et.inicializa(y);
+
+                    et.getAET(y).add(new No(ymax, xmin, incx));
+                }
+                /*if (pontos[0].Y >= pontos[pontos.Count - 1].Y)
+                {
+                    xmax = pontos[0].X;
+                    ymax = pontos[0].Y;
+                    xmin = pontos[pontos.Count - 1].X;
+                    ymin = pontos[pontos.Count - 1].Y;
+                }
+                else
+                {
+                    xmin = pontos[0].X;
+                    ymin = pontos[0].Y;
+                    xmax = pontos[pontos.Count - 1].X;
+                    ymax = pontos[pontos.Count - 1].Y;
+                }
+                dx = xmax - xmin;
+                dy = ymax - ymin;
+                incx = dx / dy;
+                y = (int)ymin;
+                if (y < 0) y = 0;
+                else if (y >= height) y = height - 1;
+                if (et.getAET(y) == null)
+                    et.init(y);
+                et.getAET(y).add(new No(ymax, xmin, incx));*/
+
+                y = cont = tl_aet = tl_et = 0;
+
+                while (y < et.getTF() && et.getAET(y) == null)
+                    y++;
+                tl_aet = aet.getLista().Count;
+                tl_et = et.getQtde();
+
+                while(y < bmp.Height  && (tl_aet > 0 || cont < tl_et))
+                {
+                    if (et.getAET(y) != null)
+                        aet.addAll(et.getAET(y).getLista());
+                    aet.ordena();
+
+                    /// Y = YMAX
+                    for(int i = 0; i < aet.getLista().Count; i++)
+                    {
+                        if (aet.getLista().ElementAt(i).Ymax <= y)
+                            aet.getLista().Remove(aet.getLista().ElementAt(i));
+                    }
+
+                    lista = aet.getLista();
+
+                    for (int i = 0, x, xf; i < lista.Count - 1; i += 2)
+                    {
+                        x = (int)Math.Round(lista.ElementAt(i).Xmin);
+                        xf = (int)Math.Round(lista.ElementAt(i + 1).Xmin);
+
+                        while(x <= xf)
+                        {
+                            if (isOnPictureBox(x, y, pictureBox1));
+                            {
+                                bmp.SetPixel(x, y, cor_ff);
+                            }
+                            x++;
+                        }
+                    }
+                    y++;
+
+                    for (int i = 0; i < aet.getLista().Count; i++)
+                        aet.getLista().ElementAt(i).Xmin += aet.getLista().ElementAt(i).Incx;
+                }
+            }
+            pictureBoxPoligonos.Image = bmp;
+        }
+
         private void desenharPoligonoMA(Poligono pol)
         {
             //Bitmap bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
@@ -1234,13 +1452,49 @@ namespace Primitivas_Graficas
             pictureBoxPoligonos.Image = bmp;
         }
 
-        private void floodFill(int x, int y)
+        private unsafe void floodFill(int x, int y)
         {
             Bitmap bmp = new Bitmap(pictureBoxPoligonos.Image);
             Color cor = Color.FromArgb(bmp.GetPixel(x, y).R, bmp.GetPixel(x, y).G, bmp.GetPixel(x, y).B);
             Color c_atual;
 
-            Stack<Ponto> pilha = new Stack<Ponto>();
+            /*Stack<int> pilha = new Stack<int>();
+            // lock data
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            
+                byte* aux = gotoxy(data, x, y);
+                int fundoB = *aux, fundoG = *(aux + 1), fundoR = *(aux + 2);
+                int[] dx = { -1, 0, 0, 1 };
+                int[] dy = { 0, -1, 1, 0 };
+                int i;
+                pilha.Push(x);
+                pilha.Push(y);
+                while (pilha.Count > 0)
+                {
+                    y = pilha.Pop();
+                    x = pilha.Pop();
+                    aux = gotoxy(data, x, y);
+                    *(aux++) = cor.B; // melhor forma, inc 1
+                    *(aux++) = cor.G;
+                    *aux = cor.R;
+                    for (i = 0; i < 4; ++i)
+                    {
+                        if (x + dx[i] > 0 && x + dx[i] < bmp.Width && y + dy[i] > 0 && y + dy[i] < bmp.Height)
+                        {
+                            aux = gotoxy(data, x + dx[i], y + dy[i]);
+                            if (*aux == fundoB && *(aux + 1) == fundoG && *(aux + 2) == fundoR)
+                            {
+                                pilha.Push(x + dx[i]);
+                                pilha.Push(y + dy[i]);
+                            }
+                        }
+                    }
+                }
+
+            // unlock
+            bmp.UnlockBits(data);*/
+
+                Stack<Ponto> pilha = new Stack<Ponto>();
 
             Ponto p = new Ponto(x, y);
 
@@ -1249,17 +1503,38 @@ namespace Primitivas_Graficas
             while(pilha.Count > 0)
             {
                 p = pilha.Pop();
+                x = p.X;
+                y = p.Y;
 
                 c_atual = Color.FromArgb(bmp.GetPixel(p.X, p.Y).R, bmp.GetPixel(p.X, p.Y).G, bmp.GetPixel(p.X, p.Y).B);
 
                 if (c_atual == cor)
                 {
                     bmp.SetPixel(x, y, cor_ff);
-                    
-                    
+
+                    if (x - 1 >= 0)
+                        pilha.Push(new Ponto(x - 1, y));
+                    if (y - 1 >= 0)
+                        pilha.Push(new Ponto(x, y - 1));
+
+                    if (x + 1 < pictureBoxPoligonos.Width)
+                        pilha.Push(new Ponto(x + 1, y));
+                    if (y + 1 < pictureBoxPoligonos.Height)
+                        pilha.Push(new Ponto(x, y + 1));
                 }
                     
             }
+
+            pictureBoxPoligonos.Image = bmp;
+
         }
+
+        /*private unsafe byte* gotoxy(BitmapData bmp, int x, int y)
+        {
+            byte* aux = (byte*)bmp.Scan0.ToPointer();
+            aux += y * bmp.Stride; // linha
+            aux += 3 * x; // coluna
+            return aux;
+        }// fim gotoxy*/
     }
 }

@@ -79,6 +79,11 @@
             this.dgvPoligonos = new System.Windows.Forms.DataGridView();
             this.colPoligonos = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colorPicker = new System.Windows.Forms.ColorDialog();
+            this.btScanLine = new System.Windows.Forms.Button();
+            this.btViewPort = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.tbV = new System.Windows.Forms.TextBox();
+            this.tbU = new System.Windows.Forms.TextBox();
             this.tabPane.SuspendLayout();
             this.tabPrimitivas.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -342,6 +347,11 @@
             // panel7
             // 
             this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel7.Controls.Add(this.btViewPort);
+            this.panel7.Controls.Add(this.label10);
+            this.panel7.Controls.Add(this.tbV);
+            this.panel7.Controls.Add(this.tbU);
+            this.panel7.Controls.Add(this.btScanLine);
             this.panel7.Controls.Add(this.btEspX);
             this.panel7.Controls.Add(this.btEspY);
             this.panel7.Controls.Add(this.btCisalhar);
@@ -612,6 +622,49 @@
             this.colPoligonos.Name = "colPoligonos";
             this.colPoligonos.ReadOnly = true;
             // 
+            // btScanLine
+            // 
+            this.btScanLine.Location = new System.Drawing.Point(5, 255);
+            this.btScanLine.Name = "btScanLine";
+            this.btScanLine.Size = new System.Drawing.Size(259, 23);
+            this.btScanLine.TabIndex = 22;
+            this.btScanLine.Text = "Scan Line";
+            this.btScanLine.UseVisualStyleBackColor = true;
+            this.btScanLine.Click += new System.EventHandler(this.BtScanLine_Click);
+            // 
+            // btViewPort
+            // 
+            this.btViewPort.Location = new System.Drawing.Point(170, 295);
+            this.btViewPort.Name = "btViewPort";
+            this.btViewPort.Size = new System.Drawing.Size(94, 23);
+            this.btViewPort.TabIndex = 26;
+            this.btViewPort.Text = "Aplicar";
+            this.btViewPort.UseVisualStyleBackColor = true;
+            this.btViewPort.Click += new System.EventHandler(this.BtViewPort_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(4, 281);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(103, 13);
+            this.label10.TabIndex = 25;
+            this.label10.Text = "View Port (Larg. Alt.)";
+            // 
+            // tbV
+            // 
+            this.tbV.Location = new System.Drawing.Point(88, 297);
+            this.tbV.Name = "tbV";
+            this.tbV.Size = new System.Drawing.Size(75, 20);
+            this.tbV.TabIndex = 24;
+            // 
+            // tbU
+            // 
+            this.tbU.Location = new System.Drawing.Point(5, 297);
+            this.tbU.Name = "tbU";
+            this.tbU.Size = new System.Drawing.Size(76, 20);
+            this.tbU.TabIndex = 23;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -698,6 +751,11 @@
         private System.Windows.Forms.TextBox tbCisX;
         private System.Windows.Forms.Button btEspX;
         private System.Windows.Forms.Button btEspY;
+        private System.Windows.Forms.Button btScanLine;
+        private System.Windows.Forms.Button btViewPort;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox tbV;
+        private System.Windows.Forms.TextBox tbU;
     }
 }
 
