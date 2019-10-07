@@ -1372,7 +1372,7 @@ namespace Primitivas_Graficas
 
                         while(x <= xf)
                         {
-                            if (isOnPictureBox(x, y, pictureBox1));
+                            if (isOnPictureBox(x, y, pictureBoxPoligonos))
                             {
                                 bmp.SetPixel(x, y, cor_ff);
                             }
@@ -1458,43 +1458,7 @@ namespace Primitivas_Graficas
             Color cor = Color.FromArgb(bmp.GetPixel(x, y).R, bmp.GetPixel(x, y).G, bmp.GetPixel(x, y).B);
             Color c_atual;
 
-            /*Stack<int> pilha = new Stack<int>();
-            // lock data
-            BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-            
-                byte* aux = gotoxy(data, x, y);
-                int fundoB = *aux, fundoG = *(aux + 1), fundoR = *(aux + 2);
-                int[] dx = { -1, 0, 0, 1 };
-                int[] dy = { 0, -1, 1, 0 };
-                int i;
-                pilha.Push(x);
-                pilha.Push(y);
-                while (pilha.Count > 0)
-                {
-                    y = pilha.Pop();
-                    x = pilha.Pop();
-                    aux = gotoxy(data, x, y);
-                    *(aux++) = cor.B; // melhor forma, inc 1
-                    *(aux++) = cor.G;
-                    *aux = cor.R;
-                    for (i = 0; i < 4; ++i)
-                    {
-                        if (x + dx[i] > 0 && x + dx[i] < bmp.Width && y + dy[i] > 0 && y + dy[i] < bmp.Height)
-                        {
-                            aux = gotoxy(data, x + dx[i], y + dy[i]);
-                            if (*aux == fundoB && *(aux + 1) == fundoG && *(aux + 2) == fundoR)
-                            {
-                                pilha.Push(x + dx[i]);
-                                pilha.Push(y + dy[i]);
-                            }
-                        }
-                    }
-                }
-
-            // unlock
-            bmp.UnlockBits(data);*/
-
-                Stack<Ponto> pilha = new Stack<Ponto>();
+            Stack<Ponto> pilha = new Stack<Ponto>();
 
             Ponto p = new Ponto(x, y);
 
@@ -1512,14 +1476,14 @@ namespace Primitivas_Graficas
                 {
                     bmp.SetPixel(x, y, cor_ff);
 
-                    if (x - 1 >= 0)
+                    if (x - 1 >= 0 && !bmp.GetPixel(x - 1, y).Equals(cor))
                         pilha.Push(new Ponto(x - 1, y));
-                    if (y - 1 >= 0)
+                    if (y - 1 >= 0 && !bmp.GetPixel(x, y - 1).Equals(cor))
                         pilha.Push(new Ponto(x, y - 1));
 
-                    if (x + 1 < pictureBoxPoligonos.Width)
+                    if (x + 1 < pictureBoxPoligonos.Width && !bmp.GetPixel(x + 1, y).Equals(cor))
                         pilha.Push(new Ponto(x + 1, y));
-                    if (y + 1 < pictureBoxPoligonos.Height)
+                    if (y + 1 < pictureBoxPoligonos.Height && !bmp.GetPixel(x, y + 1).Equals(cor))
                         pilha.Push(new Ponto(x, y + 1));
                 }
                     
