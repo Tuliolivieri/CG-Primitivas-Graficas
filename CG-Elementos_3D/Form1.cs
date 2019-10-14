@@ -87,7 +87,8 @@ namespace CG_Elementos_3D
 
         private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            if(Form1.ModifierKeys.ToString().Equals("Control"))
+            if(e.Button == MouseButtons.Right)
+            //if(Form1.ModifierKeys.ToString().Equals("Control"))
             { 
                 desx = e.X - xini;
                 desy = e.Y - yini;
